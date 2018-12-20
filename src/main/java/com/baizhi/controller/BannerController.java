@@ -20,9 +20,9 @@ public class BannerController {
     private BannerService bannerService;
 
     @RequestMapping("/queryByStatusBanner")
-    public BannerDto queryByStatusBanner() {
-        BannerDto bannerDto = bannerService.queryByStatusBanner();
-
+    public BannerDto queryByStatusBanner(int page, int rows) {
+        System.out.println("page::" + page + ",rows::" + rows);
+        BannerDto bannerDto = bannerService.queryByPageBanner(page, rows);
         System.out.println(bannerDto);
 
         return bannerDto;

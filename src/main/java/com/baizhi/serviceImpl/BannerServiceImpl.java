@@ -4,6 +4,7 @@ import com.baizhi.dto.BannerDto;
 import com.baizhi.entity.Banner;
 import com.baizhi.mapper.BannerMapper;
 import com.baizhi.service.BannerService;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,21 +21,21 @@ public class BannerServiceImpl implements BannerService {
 
     //查所有
     @Override
-    public BannerDto queryByStatusBanner() {
+    public BannerDto queryByPageBanner(int courPage, int pageRows) {
+        PageHelper.startPage(courPage, pageRows);//使用mysql分页插件
+
         BannerDto bannerDto = new BannerDto();
-        List<Banner> list = bannerMapper.selectAll();//查所有轮播图信息
+        List<Banner> list = bannerMapper.selectAll();
         int count = bannerMapper.selectCount(new Banner());
         bannerDto.setRows(list);
         bannerDto.setTotal(count);
         return bannerDto;
     }
-
     //修改
     @Override
     public void updateBanner(Banner banner) {
         bannerMapper.updateByPrimaryKey(banner);
     }
-
     //删除
     @Override
     public void deleteByIdBanner(int id) {

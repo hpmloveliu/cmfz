@@ -5,7 +5,7 @@ import com.baizhi.entity.Banner;
 
 
 public interface BannerService {
-    public BannerDto queryByStatusBanner();
+    public BannerDto queryByPageBanner(int courPage, int page);
 
     public void updateBanner(Banner banner);
 

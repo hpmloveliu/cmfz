@@ -24,3 +24,8 @@ spring: #配置数据源
       max-request-size: 20MB
 mybatis:
   type-aliases-package: com.baizhi.entity
+pagehelper:
+  helper-dialect:  mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
