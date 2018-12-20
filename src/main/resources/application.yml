@@ -1,0 +1,26 @@
+server: #修改端口号  与  指定网页访问项目名
+  port: 8989
+  context-path: /cmfz
+  jsp-servlet:
+    init-parameters:
+      development: true
+spring: #配置数据源
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/cmfz
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: root
+  mvc:  #配置spring boot支持jsp
+    view:
+      prefix: /
+      suffix: .jsp
+  jackson: #jackson的全局编码配置
+    date-format: yyyy-MM-dd
+    time-zone: GMT+8
+  http:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 20MB
+mybatis:
+  type-aliases-package: com.baizhi.entity
