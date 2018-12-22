@@ -35,6 +35,21 @@
 
             }
         }, '-', {
+            text: "取消编辑",
+            iconCls: 'icon-back',
+            handler: function () {
+                //获取被选中的行
+                var row = $("#dg").edatagrid("getSelected");
+                if (row != null) {
+                    //或取选中行的下标
+                    var index = $("#dg").edatagrid("getRowIndex", row);
+                    $("#dg").edatagrid("cancelEdit", index);
+                    $("#dg").edatagrid("unselectRow", index);
+                } else {
+                    $.messager.alert('警告', '请先选中行');
+                }
+            }
+        }, '-', {
             text: "删除",
             iconCls: 'icon-remove',
             handler: function () {
@@ -114,7 +129,8 @@
                     '<p>日期: ' + rowData.pub_date + '</p>' +
                     '</td>' +
                     '</tr></table>';
-            }
+            },
+
         });
 
 

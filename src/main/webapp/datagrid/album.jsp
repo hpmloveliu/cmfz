@@ -40,9 +40,9 @@
                 parentId = row.id;  //获取父节点的id值
                 if (row != null) {
                     //判断是否为父节点
-                    var parent = $("#albumTreegrid").treegrid("getParent", row.id);
-                    if (parent == null) { //如果为父节点，则parent为null
-                        $("#detailDialog").dialog("open");
+                    var parentNode = $("#albumTreegrid").treegrid("getParent", row.id);
+                    if (parentNode == null) { //如果为父节点，则parent为null
+
                     } else {
                         $.messager.alert("提示", "请选中一个专辑标题");
                     }
@@ -69,8 +69,25 @@
             text: "下载音频",
             iconCls: 'icon-undo',
             handler: function () {
-                alert('帮助按钮')
+                //获取被选中的行
+                var row = $("#albumTreegrid").treegrid("getSelected");
+
+                if (row != null) {
+                    //判断是否为父节点
+                    var parentNode = $("#albumTreegrid").treegrid("getParent", row.id);
+                    if (parentNode != null) {
+                        var mp3Url = row.url;
+                        //如果为子节点，则同步请求下载对应的音频文件,根据对应的章节Id查询
+                        location.href = "${pageContext.request.contextPath}/album/downloadChapter?mp3Url=" + mp3Url;
+                        //注意文件下载时不能用异步请求，因为异步请求不能使用文件流
+                    } else {
+                        $.messager.alert("提示", "请选则专辑中的一个章节");
+                    }
+                } else {
+                    $.messager.alert("提示", "请先选中一个章节");
+                }
             }
+
         }]
 
 
@@ -79,20 +96,38 @@
             idField: 'id',
             treeField: 'title',
             columns: [[
-                {field: 'title', title: '专辑名称', width: 180},
-                {field: 'url', title: '下载路径', width: 60, align: 'right'},
+                {field: 'title', title: '专辑名称', width: 60},
+                {field: 'url', title: '播放', align: 'right', formatter: myPlay},
                 {field: 'size', title: '章节大小(MB)', width: 80},
                 {field: 'duration', title: '章节时长(秒)', width: 80}
             ]],
             fit: true,
             fitColumns: true,
             toolbar: albumTb,
-            state: closed
+            onLoadSuccess: function () {
+                $('#albumTreegrid').treegrid("collapseAll");
+            }
         });
+
 
 
     });
 
+    // 自定义操作列的内容
+    /*
+        参数1：当前列中 该行上的属性值
+        参数2：该行对应的json对象
+        参数3：行下标索引
+    */
+    function myPlay(value, row, index) {
+        if (typeof row.id == "string") {
+            var v = row.url;
+            var a = "<audio controls><source src='${pageContext.request.contextPath}" + v + "' type='audio/mpeg'></audio>"
+            return a;
+        } else {
+            return "";
+        }
+    }
 </script>
 <!-- 树形表格 -->
 <table id="albumTreegrid" style="width:600px;height:400px"></table>

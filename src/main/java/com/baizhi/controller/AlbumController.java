@@ -12,13 +12,17 @@ import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.text.DecimalFormat;
 import java.util.List;
 
@@ -98,4 +102,32 @@ public class AlbumController {
         chapterService.insertChapter(chapter);
         System.out.println(chapter);
     }
+
+    //下载章节音频
+    @RequestMapping("downloadChapter")
+    public void downloadChapter(String mp3Url, HttpSession session, HttpServletResponse response) throws IOException {
+        //获取要下载的文件真实路径
+        String realPath = session.getServletContext().getRealPath(mp3Url);
+        //读取文件
+        //byte[] bytes = FileUtils.readFileToByteArray(new File(realPath));
+        byte[] bytes = FileCopyUtils.copyToByteArray(new File(realPath));
+        if (bytes == null) {
+            System.out.println(11111111);
+        }
+        String[] str = mp3Url.split("/"); //分隔文件名
+        /*for (String s : str) {
+            System.out.println(s);
+        }*/
+        //设置响应头，以附件的形式下载
+        response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(str[2], "UTF-8"));
+
+        //获取输出流输出附件内容
+        ServletOutputStream outputStream = response.getOutputStream();
+        outputStream.write(bytes);
+        //清空缓存，关闭文件流
+        if (outputStream != null) outputStream.flush();
+        if (outputStream != null) outputStream.close();
+        System.out.println("真实路径：：" + realPath);
+    }
+
 }
