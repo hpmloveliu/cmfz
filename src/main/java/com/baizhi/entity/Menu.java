@@ -17,7 +17,7 @@ public class Menu {
     @KeySql(useGeneratedKeys = true)
     private Integer id;
     private String title;
-    private String iconcls;
+    private String iconCls;
     private String url;
     private Integer parentId;
 

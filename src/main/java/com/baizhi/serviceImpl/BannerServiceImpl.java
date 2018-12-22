@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -38,9 +40,22 @@ public class BannerServiceImpl implements BannerService {
     }
     //删除
     @Override
-    public void deleteByIdBanner(int id) {
+    public void deleteByIdBanner(int id, HttpSession session) {
         bannerMapper.deleteByPrimaryKey(id);
-        System.out.println("删除成功");
+        //在删除数据库时，删除对应的图片
+        //1.根据id查询
+        Banner banner = bannerMapper.selectByPrimaryKey(id);
+        //2.获取图片路径
+        String path = banner.getImg_path();
+        //3.获取文件真实路径
+        String realPath = session.getServletContext().getRealPath(path);
+        //3.根据文件路径创建文件对象
+        File file = new File(realPath);
+        file.delete();
+
+
+        System.out.println("所要删除文件的真实路径" + realPath);
+
     }
 
     //添加

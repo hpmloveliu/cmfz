@@ -41,7 +41,7 @@
                 //获取被选中的行
                 var row = $("#dg").edatagrid("getSelected");
                 if (row != null) {
-                    console.log(row.id);
+                    // console.log(row.id);
                     //或取要删除的行row的id
                     var id = row.id;
                     //发送异步请求，在数据库中删除响应数据

@@ -23,15 +23,15 @@ public class BannerController {
     public BannerDto queryByStatusBanner(int page, int rows) {
         System.out.println("page::" + page + ",rows::" + rows);
         BannerDto bannerDto = bannerService.queryByPageBanner(page, rows);
-        System.out.println(bannerDto);
+        // System.out.println(bannerDto);
 
         return bannerDto;
     }
 
     //删除
     @RequestMapping("delete")
-    public void deleteByIdBanner(int id) {
-        bannerService.deleteByIdBanner(id);
+    public void deleteByIdBanner(int id, HttpSession session) {
+        bannerService.deleteByIdBanner(id, session);
 
     }
 
@@ -49,7 +49,7 @@ public class BannerController {
 
         //1.获取文件的名称
         String filename = file1.getOriginalFilename();
-        //2.将文件名放在对象中
+        //2.将文件名放在Banner对象中
         banner.setImg_path("/img/" + filename);
         //3.获取上传文件的真实路径
         ServletContext ctx = session.getServletContext();

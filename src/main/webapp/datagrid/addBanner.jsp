@@ -10,7 +10,11 @@
                 $("#addform").form("submit", {
                     url: "${pageContext.request.contextPath}/banner/insertBanner",
                     onSubmit: function () {
-                        $("#addform").form("validate");
+                        var h = $("#addform").form("validate");
+                        if (!h) {
+                            $.messager.progress('close');	// 如果验证不成功则隐藏进度条
+                        }
+                        return $("#addform").form("validate");
                     },
                     success: function () {
                         $.messager.progress('close');	// 如果提交成功则隐藏进度条

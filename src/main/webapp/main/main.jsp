@@ -30,7 +30,7 @@
                 success: function (result) {
                     $.each(result, function (i, n) {//i为当前遍历元素的下标，n为data中取出来的一个元素
                         var id = n.id;
-                        console.log(id)
+                        // console.log(id)
                         //添加面板，父标签标题,手风琴
                         $('#aa').accordion('add', {
                             title: result[i].title,
@@ -54,7 +54,7 @@
                                         /*
                                         参数1：当前列中 该行上的属性值
                                         */
-                                        console.log(value);
+                                        //console.log(value);
                                         return value.title;
                                     },
                                     onClick: function (node) {//为菜单项添加事件,有一个参数 node代表当前节点的json对象
