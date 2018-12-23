@@ -22,8 +22,27 @@
 
             //  form 表单提交
             $("#loginForm").bind("submit", function () {
-                // alert("sfs");
+                var name = $("#name").val();
+                var password = $("#password").val();
+                var code = $("#enCode").val();
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/adminLogin/login",
+                    data: "name=" + name + "&password=" + password + "&code=" + code,
+                    dataType: "text",//设置服务器的响应格式
+                    success: function (res) {
+                        var r = eval("(" + res + ")");
+                        if (r == "ok") {
+                            location.href = "${pageContext.request.contextPath}/main/main.jsp";
+                        } else {
+                            alert("用户名或密码错误");
+                            $("#name").val("");
+                            $("#password").val("");
+                            $("#enCode").val("");
+                        }
 
+                    }
+                });
             });
         });
     </script>
@@ -31,7 +50,7 @@
 <body>
 
 <div class="login">
-    <form id="loginForm" action="${pageContext.request.contextPath}/adminLogin/login" method="post">
+    <form id="loginForm">
 
         <table>
             <tbody>
@@ -43,7 +62,7 @@
                     用户名:
                 </th>
                 <td>
-                    <input type="text" name="name" class="text" value="xxx" maxlength="20"/>
+                    <input id="name" type="text" name="name" class="text" value="xxx" maxlength="20"/>
                 </td>
             </tr>
             <tr>
@@ -51,7 +70,8 @@
                     密&nbsp;&nbsp;&nbsp;码:
                 </th>
                 <td>
-                    <input type="password" name="password" class="text" value="xxx" maxlength="20" autocomplete="off"/>
+                    <input id="password" type="password" name="password" class="text" value="xxx" maxlength="20"
+                           autocomplete="off"/>
                 </td>
             </tr>
 

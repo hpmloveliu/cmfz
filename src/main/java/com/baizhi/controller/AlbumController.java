@@ -4,6 +4,7 @@ import com.baizhi.entity.Album;
 import com.baizhi.entity.Chapter;
 import com.baizhi.service.AlbumService;
 import com.baizhi.service.ChapterService;
+import org.apache.commons.io.FileUtils;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -12,7 +13,6 @@ import org.jaudiotagger.audio.mp3.MP3AudioHeader;
 import org.jaudiotagger.audio.mp3.MP3File;
 import org.jaudiotagger.tag.TagException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -109,11 +109,9 @@ public class AlbumController {
         //获取要下载的文件真实路径
         String realPath = session.getServletContext().getRealPath(mp3Url);
         //读取文件
-        //byte[] bytes = FileUtils.readFileToByteArray(new File(realPath));
-        byte[] bytes = FileCopyUtils.copyToByteArray(new File(realPath));
-        if (bytes == null) {
-            System.out.println(11111111);
-        }
+        byte[] bytes = FileUtils.readFileToByteArray(new File(realPath));
+        // byte[] bytes = FileCopyUtils.copyToByteArray(new File(realPath));
+
         String[] str = mp3Url.split("/"); //分隔文件名
         /*for (String s : str) {
             System.out.println(s);
