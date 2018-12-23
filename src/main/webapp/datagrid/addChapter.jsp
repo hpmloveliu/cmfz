@@ -62,7 +62,7 @@
             accept: "audio/mpeg",//限制上传的文件只能是.mp3格式
             prompt: "请选择mp3格式音频..."
         });
-        //播音员
+        //选择专辑
         $("#chapterAlbumId").combobox({
             url: '${pageContext.request.contextPath}/album/queryAlbum',
             valueField: 'id',

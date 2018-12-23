@@ -2,7 +2,7 @@
 <script type="text/javascript">
     var parentId; //全局变量
     $(function () {
-        //初始化对话框--添加章节
+        //初始化对话框--专辑详细信息
         $("#detailDialog").dialog({
             title: "添加对话框",
             width: 400,
@@ -42,7 +42,7 @@
                     //判断是否为父节点
                     var parentNode = $("#albumTreegrid").treegrid("getParent", row.id);
                     if (parentNode == null) { //如果为父节点，则parent为null
-
+                        $("#detailDialog").dialog("open");
                     } else {
                         $.messager.alert("提示", "请选中一个专辑标题");
                     }
