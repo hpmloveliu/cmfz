@@ -2,6 +2,15 @@
 <script type="text/javascript">
     var parentId; //全局变量
     $(function () {
+        //初始化对话框--导入对话框
+        $("#albumImportDialog").dialog({
+            title: "数据导入对话框",
+            closed: true,
+            width: "300",
+            height: "200",
+            href: "${pageContext.request.contextPath}/datagrid/aImport.jsp"
+        });
+
         //初始化对话框--专辑详细信息
         $("#detailDialog").dialog({
             title: "添加对话框",
@@ -88,11 +97,25 @@
                 }
             }
 
+        }, '-', {
+            text: "导入",
+            iconCls: 'icon-tip',
+            handler: function () {
+                alert("导入窗口");
+                //location.href="${pageContext.request.contextPath}/album/albumImport";
+                $("#albumImportDialog").dialog("open");
+            }
+        }, '-', {
+            text: "导出",
+            iconCls: 'icon-print',
+            handler: function () {
+                location.href = "${pageContext.request.contextPath}/album/albumExport";
+            }
         }]
 
 
         $('#albumTreegrid').treegrid({
-            url: '${pageContext.request.contextPath}/album/queryAlbum',
+            url: '${pageContext.request.contextPath}/album/queryAlbumByPage',
             idField: 'id',
             treeField: 'title',
             columns: [[
@@ -104,9 +127,16 @@
             fit: true,
             fitColumns: true,
             toolbar: albumTb,
-            onLoadSuccess: function () {
+            onLoadSuccess: function () { //成功后的回调
                 $('#albumTreegrid').treegrid("collapseAll");
-            }
+            },
+            onDblClickRow: function (row) {//双击事件,参数为被选中的当前行
+                $("#playChapterDialog").dialog("open");
+                $("#audio_url").prop("src", "${pageContext.request.contextPath}" + row.url);//为音频标签属性赋值
+            },
+            pagination: true,
+            pageSize: 3,
+            pageList: [3, 5, 10, 15]
         });
 
 
@@ -138,5 +168,14 @@
 <div id="addAlbumDialog"></div>
 <!-- 添加章节对话框 -->
 <div id="addChapterDialog"></div>
-<!-- 下载音频对话框 -->
-<div id="downloadDialog"></div>
+<!-- 播放音频对话框 -->
+<div id="playChapterDialog" class="easyui-dialog" title="paly Dialog"
+     data-options="resizable:true,modal:true,closed:true">
+    <!-- 音频标签 -->
+    <audio id="audio_url" src="" controls="controls" autoplay="autoplay" loop="loop">
+    </audio>
+</div>
+<!-- 导入对话框 -->
+<div id="albumImportDialog">
+
+</div>

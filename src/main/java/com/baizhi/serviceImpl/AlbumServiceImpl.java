@@ -1,5 +1,6 @@
 package com.baizhi.serviceImpl;
 
+import com.baizhi.dto.AlbumDto;
 import com.baizhi.entity.Album;
 import com.baizhi.mapper.AlbumMapper;
 import com.baizhi.service.AlbumService;
@@ -43,6 +44,20 @@ public class AlbumServiceImpl implements AlbumService {
 
         Album album = albumMapper.selectByPrimaryKey(id);
         return album;
+    }
+
+    //分页查询
+    @Override
+    public AlbumDto queryAlbumByPage(int page, int rows) {
+        //创建DTO对象
+        AlbumDto albumDto = new AlbumDto();
+        List<Album> albums = albumMapper.queryAlbumByPage(page, rows);
+        //查存总条数
+        int selectCount = albumMapper.selectCount(new Album());
+        //为dto属性赋值
+        albumDto.setRows(albums);
+        albumDto.setTotal(selectCount);
+        return albumDto;
     }
 
 

@@ -12,6 +12,8 @@
     <script type="text/javascript" src="../js/datagrid-detailview.js"></script>
     <script type="text/javascript" src="../js/jquery.edatagrid.js"></script>
     <script type="text/javascript" src="../js/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/echarts.min.js"></script>
+    <script type="text/javascript" src="${pageContext.request.contextPath }/js/china.js"></script>
     <script type="text/javascript">
         $(function () {
             <!-- tabs处理 -->
@@ -28,13 +30,13 @@
                 dataType: "json",
                 url: '${pageContext.request.contextPath}/category/queryParentCategory?parent_id=0',//获取菜单
                 success: function (result) {
-                    $.each(result, function (i, n) {//i为当前遍历元素的下标，n为data中取出来的一个元素
-                        var id = n.id;
+                    $.each(result, function (i, n) {//i为当前遍历元素的下标，n为result中取出来的一个元素
+                        var vid = n.id;
                         // console.log(id)
                         //添加面板，父标签标题,手风琴
                         $('#aa').accordion('add', {
                             title: result[i].title,
-                            content: '<div style="padding:10px 0px"><ul id="tree' + id + '" class="easyui-tree"></ul></div>',
+                            content: '<div style="padding:10px 0px"><ul id="tree' + vid + '" class="easyui-tree"></ul></div>',
                             selected: false
                         });
 
@@ -42,12 +44,12 @@
                         $.ajax({
                             type: 'POST',
                             async: false,
-                            url: "${pageContext.request.contextPath}/category/queryParentCategory?parent_id=" + id,
+                            url: "${pageContext.request.contextPath}/category/queryParentCategory?parent_id=" + vid,
                             dataType: "json",
                             success: function (data) {
                                 //根据返回结果，将返回值赋值给二级标签,二级菜单为tree
                                 // console.log(data);
-                                $("#tree" + id).tree({
+                                $("#tree" + vid).tree({
                                     data: data,
                                     formatter: function (value) {
                                         //自定义列内容
@@ -61,7 +63,8 @@
                                         //在单击叶子节点时自动跳到对应的选项卡，并加载数据，
                                         //当点击某个菜单项时，调用此方法
                                         //1先判断是否为叶子节点  ，调用tree的isLeaf方法，是叶子节点返回true 有一个target参数是一个节点DOM对象
-                                        var bn = $("#tree" + id).tree("isLeaf", node.target);
+                                        //console.log("vid="+vid+"::"+node);
+                                        var bn = $("#tree" + vid).tree("isLeaf", node.target);
                                         if (bn) {//如果时叶子节点，则调用方法
                                             // console.log(node);
                                             addTabs(node);

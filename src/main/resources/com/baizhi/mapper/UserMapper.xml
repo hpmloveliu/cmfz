@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baizhi.mapper.UserMapper">
+    <!-- 分组查询了，按照省分分组 -->
+    <select id="queryProvince" resultType="UserProvince">
+        select count(*) value,province name
+        from user
+        group by province
+    </select>
+
+    <!-- 查询用户不同周期内的活跃数 -->
+    <select id="queryUserActive" resultType="Integer">
+       <![CDATA[
+        select count(*)
+        from user
+        where datediff(now(), reg_date) < #{time}
+        ]]>
+    </select>
+
+</mapper>
+
+
+
+
+

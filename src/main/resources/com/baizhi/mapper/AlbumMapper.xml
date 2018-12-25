@@ -44,6 +44,30 @@
                            on a.id = c.album_id
     </select>
 
+    <!-- 分页查询 --><!-- 先分页，在进行表连接 -->
+    <select id="queryAlbumByPage" resultMap="res1">
+        select a.id,
+               a.title,
+               a.count,
+               a.cover_img,
+               a.score,
+               a.author,
+               a.broadcast,
+               a.brief,
+               a.pub_date,
+               c.id    cid,
+               c.title ctitle,
+               c.size,
+               c.duration,
+               c.url,
+               c.upload_date
+        from (select *
+              from album limit
+                   ${(page-1)*rows},
+                   ${rows}) a
+                 LEFT JOIN chapter c
+                           on a.id = c.album_id
+    </select>
 </mapper>
 
 
