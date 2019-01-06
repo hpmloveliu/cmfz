@@ -26,7 +26,26 @@
         <version>1.5.8.RELEASE</version>
     </parent>
 
+    <!-- 引入goeasy的仓库 -->
+    <repositories>
+        <repository>
+            <id>goeasy</id>
+            <name>goeasy</name>
+            <url>
+                http://maven.goeasy.io/content/repositories/releases/
+            </url>
+        </repository>
+    </repositories>
+
     <dependencies>
+
+        <!-- 添加goeasy依赖 -->
+        <dependency>
+            <groupId>io.goeasy</groupId>
+            <artifactId>goeasy-sdk</artifactId>
+            <version>0.3.8</version>
+        </dependency>
+
         <!-- 给内嵌tomcat提供jsp解析功能的jar-->
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -104,7 +123,7 @@
             <version>2.6</version>
         </dependency>
 
-        <!-- poi的支持 -->
+        <!-- poi的注解式支持 -->
         <dependency>
             <groupId>cn.afterturn</groupId>
             <artifactId>easypoi-base</artifactId>

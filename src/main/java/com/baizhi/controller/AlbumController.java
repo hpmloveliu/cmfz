@@ -174,7 +174,7 @@ public class AlbumController {
         try {
             //设置响应类型
             response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode("album.xls", "UTF-8"));
-            response.setContentType("application/vnd.ms-excel");
+            response.setContentType("application/vnd.ms-excel"); //设置导出类型为xls格式
             workbook.write(response.getOutputStream());
         } catch (IOException e) {
             e.printStackTrace();
